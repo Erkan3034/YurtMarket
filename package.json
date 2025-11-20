@@ -1,0 +1,30 @@
+{
+  "name": "yurtmarket",
+  "version": "1.0.0",
+  "description": "Clean-architecture modular monolith for a dorm-centric marketplace. The scaffold includes domain entities, repository interfaces, Fastify-facing controllers/routes, Prisma schema, Supabase auth adapter, and starter infrastructure so you can begin wiring real logic immediately.",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.21.1",
+    "@supabase/supabase-js": "^2.84.0",
+    "fastify": "^5.6.2",
+    "nodemailer": "^7.0.10",
+    "prisma": "^5.21.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.3"
+  }
+}

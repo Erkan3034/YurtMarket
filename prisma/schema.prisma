@@ -13,6 +13,7 @@ model User {
   email       String   @unique
   phone       String?
   dormId      String
+  dorm        Dorm     @relation(fields: [dormId], references: [id])
   roomNumber  String?
   createdAt   DateTime @default(now())
   seller      Seller?
@@ -56,15 +57,18 @@ model Order {
   createdAt DateTime @default(now())
   product   Product  @relation(fields: [productId], references: [id])
   buyer     User     @relation(fields: [buyerId], references: [id])
+  review    Review?
 }
 
 model Review {
   id        String   @id @default(uuid())
-  orderId   String
+  orderId   String   @unique
+  sellerId  String
   rating    Int
   comment   String?
   createdAt DateTime @default(now())
   order     Order    @relation(fields: [orderId], references: [id])
+  seller    Seller   @relation(fields: [sellerId], references: [id])
 }
 
 model Subscription {

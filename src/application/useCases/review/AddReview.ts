@@ -19,9 +19,12 @@ export class AddReview {
       throw new NotFoundError("Order not found");
     }
 
+    const sellerId = order.snapshot.sellerId;
+
     const review = Review.create({
       id: randomUUID(),
       orderId: dto.orderId,
+      sellerId,
       rating: dto.rating,
       comment: dto.comment,
     });

@@ -1,6 +1,7 @@
 export interface ReviewProps {
   id: string;
   orderId: string;
+  sellerId: string;
   rating: number;
   comment?: string | null;
   createdAt?: Date;
@@ -22,6 +23,10 @@ export class Review {
 
   toJSON() {
     return this.props;
+  }
+
+  get snapshot(): Readonly<ReviewProps> {
+    return { ...this.props };
   }
 }
 

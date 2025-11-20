@@ -16,13 +16,14 @@ export class PrismaReviewRepository implements IReviewRepository {
       orderBy: { createdAt: "desc" },
     });
 
-    return records.map((record) => this.toDomain(record as NonNullable<ReviewRecord>));
+    return records.map((record: NonNullable<ReviewRecord>) => this.toDomain(record));
   }
 
   private toDomain(record: NonNullable<ReviewRecord>) {
     return Review.create({
       id: record.id,
       orderId: record.orderId,
+      sellerId: record.sellerId,
       rating: record.rating,
       comment: record.comment ?? undefined,
       createdAt: record.createdAt ?? undefined,
