@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(uuid())
+  name        String
+  email       String   @unique
+  phone       String?
+  dormId      String
+  roomNumber  String?
+  createdAt   DateTime @default(now())
+  seller      Seller?
+  orders      Order[]
+}
+
+model Seller {
+  id           String    @id @default(uuid())
+  userId       String    @unique
+  status       String
+  totalSales   Int       @default(0)
+  ratingAvg    Float     @default(0)
+  createdAt    DateTime  @default(now())
+  products     Product[]
+  reviews      Review[]
+  subscription Subscription?
+  user         User      @relation(fields: [userId], references: [id])
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  sellerId    String
+  name        String
+  description String
+  price       Float
+  stock       Int
+  isActive    Boolean  @default(true)
+  categoryId  String?
+  createdAt   DateTime @default(now())
+  seller      Seller   @relation(fields: [sellerId], references: [id])
+  orders      Order[]
+}
+
+model Order {
+  id        String   @id @default(uuid())
+  buyerId   String
+  sellerId  String
+  productId String
+  quantity  Int
+  status    String
+  createdAt DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id])
+  buyer     User     @relation(fields: [buyerId], references: [id])
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  orderId   String
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+  order     Order    @relation(fields: [orderId], references: [id])
+}
+
+model Subscription {
+  id          String   @id @default(uuid())
+  sellerId    String   @unique
+  plan        String
+  activeUntil DateTime
+  autoRenew   Boolean
+  createdAt   DateTime @default(now())
+  seller      Seller   @relation(fields: [sellerId], references: [id])
+}
+
+model Dorm {
+  id       String @id @default(uuid())
+  name     String
+  location String?
+  users    User[]
+}
+
