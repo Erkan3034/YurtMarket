@@ -46,17 +46,28 @@ SMTP_PASS=
 
 ## Supabase Setup
 1. Create a new project at https://supabase.com.
-2. In Project → Settings → Database grab the connection string and set `DATABASE_URL`.
+2. In Project → Settings → Database grab the **pooler** connection string (port `6543`) and set `DATABASE_URL` to the Prisma-friendly URI (append `?pgbouncer=true&connection_limit=1`).
 3. Enable Email login under Auth → Providers.
-4. Grab `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` from Project Settings → API.
-5. Run `npx prisma generate` and `npx prisma migrate dev` once `.env` is ready.
+4. Grab `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` from Project Settings → API (service-role key is required for `auth.admin.createUser`).
+5. Prisma migrations çalıştırılamıyorsa (PgBouncer kısıtı) `prisma/migrations/0001_init/migration.sql` dosyasındaki SQL'i Supabase SQL Editor üzerinden uygulayıp ardından `npx prisma migrate resolve --applied 0001_init` ile yerel olarak işaretleyin.
 
-## Initial Commands
+## Backend Komutları
 ```
 npm install
 npx prisma generate
-npx prisma migrate dev
 npm run dev
 ```
 
-The repo currently contains scaffolds and templates—feel free to extend use cases, controllers, and repositories with real logic as you integrate Supabase and Next.js frontend clients.
+## Frontend (Next.js + Tailwind + React Query)
+```
+cd frontend
+npm install
+npm run dev
+```
+Ön yüz `.env.local` dosyasında `NEXT_PUBLIC_API_URL` ile Fastify tabanlı API adresini bekler. Uçlar:
+- `/` : Landing + CTA
+- `/login`, `/register` : React Hook Form + Supabase Auth proxy
+- `/dashboard` : ürün listesi, satıcı başvurusu, ürün ekleme
+- `/products` : filtrelenebilir katalog
+
+Her sayfa mobil/tablet/masaüstü için responsive tasarlandı. Query kullanımıyla canlı veriler Fastify API'dan çekilir.
